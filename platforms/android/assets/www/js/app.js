@@ -1,23 +1,23 @@
 $(document).ready(function(){  
-	document.addEventListener('deviceready', onDeviceReady, false);
+	document.addEventListener('deviceready', onDeviceReady, true);
 });
 
 function onDeviceReady(){
 
 	//Check Local Storage for channel
 
-	if(localStorage.channel == null || localStorage.channel == ''){
+	if(window.localStorage.getItem("channel") == null || window.localStorage.getItem("channel") == ''){
 		//Ask user for channel
 		$('#popupDialog').popup("open");
 	}else{
-		var channel = localStorage.getItem("channel");
+		var channel = window.localStorage.getItem("channel");
 	}
 
-	if(localStorage.getItem("maxresults") == null || localStorage.getItem("maxresults") == ''){
+	if(window.localStorage.getItem("maxresults") == null || window.localStorage.getItem("maxresults") == ''){
 		setMaxResults(10);
 	}
 
-	if(localStorage.getItem("maxresults") > 25 ){
+	if(window.localStorage.getItem("maxresults") > 25 ){
 		setMaxResults(25);
 	}
 
@@ -44,8 +44,8 @@ function onDeviceReady(){
 	});
 
 	$(document).on('pageinit', '#options', function(){
-		var channel = localStorage.getItem("channel");
-		var maxresults = localStorage.getItem("maxresults");
+		var channel = window.localStorage.getItem("channel");
+		var maxresults = window.localStorage.getItem("maxresults");
 		$('#channelNameOptions').val(channel);
 		$('#maxResultsOptions').val(maxresults);
 	});
@@ -65,7 +65,7 @@ function getPlaylist(channel){
 			function(data){
 				$.each(data.items, function(i, item){
 					var playlistId = item.contentDetails.relatedPlaylists.uploads;
-					getVideos(playlistId, localStorage.getItem('maxresults'));
+					getVideos(playlistId, window.localStorage.getItem('maxresults'));
 				});
 			}
 		);
@@ -104,7 +104,7 @@ function showVideo(videoId){
 }
 
 function setChannel(channel){
-	localStorage.setItem("channel", channel);
+	window.localStorage.setItem("channel", channel);
 }
 
 function saveOptions(){
@@ -117,8 +117,8 @@ function saveOptions(){
 }
 
 function clearChannel(){
-	localStorage.removeItem('channel');
-	localStorage.removeItem('maxresults');
+	window.localStorage.removeItem('channel');
+	window.localStorage.removeItem('maxresults');
 	$('.app').pagecontainer('change', '#home',{options});
 	$('#vidlist').html('');
 	$('#channelNameOptions').val('');
@@ -127,5 +127,5 @@ function clearChannel(){
 }
 
 function setMaxResults(maxResults){
-	localStorage.setItem("maxresults", maxResults);
+	window.localStorage.setItem("maxresults", maxResults);
 }
